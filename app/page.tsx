@@ -81,13 +81,13 @@ const Home = () => {
                             ))}
                         </tbody>
                     </table>
-                    
                 </div>
 
                 <div className="...">
                     {/* Formulario para agregar enlaces */}
                     <form onSubmit={handleSubmit}>
                         <input
+                            className="w-3/4 block min-w-0 grow bg-gray-600 py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6"
                             type="text"
                             placeholder="URL"
                             value={url}
@@ -96,15 +96,36 @@ const Home = () => {
                         />
                         <br />
                         <br />
-                        <textarea
-                            placeholder="Descripción"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
+
+                        <div>
+                            <label
+                                htmlFor="message" // Cambiado de 'for' a 'htmlFor'
+                                className="block mb-2.5 text-sm font-medium text-heading"
+                            >
+                                Description
+                            </label>
+                            <textarea
+                                id="message"
+                                rows={3}
+                                className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-3/4 p-3.5 shadow-xs placeholder:text-body"
+                                placeholder="Write your description here..."
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                required
+                            ></textarea>
+                        </div>
+
                         <br />
                         <br />
-                        <button type="submit">Save link</button>
+
+                        <button
+                            type="submit"
+                            className="text-white bg-[#0f1419] hover:bg-[#0f1419]/90 focus:ring-4 focus:outline-none focus:ring-[#0f1419]/50 box-border border border-transparent font-medium leading-5 rounded-3xl text-sm px-4 py-2.5 text-center inline-flex items-center dark:hover:bg-[#24292F] dark:focus:ring-[#24292F]/55 pl-12 pr-12 ml-5"
+                        >
+                            Save
+                        </button>
+
+                        {/* <button type="submit">Save link</button> */}
                     </form>
                 </div>
             </div>
