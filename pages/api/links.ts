@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import mysql from "mysql2";
 
+// Conexión a la base de datos
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -9,51 +10,36 @@ const db = mysql.createConnection({
     database: "linkdb",
 });
 
-db.connect((err) => {
-    if (err) {
-        console.error("Error connecting to the database:", err);
-        return;
-    }
-    console.log("Connected to the database");
-});
-
-interface Link {
-    id: number;
-    url: string;
-    description: string;
-}
-
+// API handler para manejar solicitudes GET y POST
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+    // Obtener todos los enlaces (GET)
     if (req.method === "GET") {
         db.query("SELECT * FROM links", (err, results) => {
-            if (err) {
-                res.status(500).json({ error: "Error fetching links" });
-                return;
-            }
-            res.status(200).json(results);
+            if (err)
+                return res.status(500).json({ error: "Error fetching links" });
+            res.status(200).json(results); // Devuelve los enlaces
         });
-    } else if (req.method === "POST") {
+    }
+
+    // Agregar un nuevo enlace (POST)
+    else if (req.method === "POST") {
         const { url, description } = req.body;
         db.query(
             "INSERT INTO links (url, description) VALUES (?, ?)",
             [url, description],
             (err, results) => {
-                if (err) {
-                    res.status(500).json({ error: "Error adding the link" });
-                    return;
-                }
-
-                // Asegúrate de acceder a insertId desde el resultado correcto
-                const insertId = (results as mysql.ResultSetHeader).insertId;
-
+                if (err)
+                    return res
+                        .status(500)
+                        .json({ error: "Error adding the link" });
                 res.status(201).json({
-                    id: insertId, // Aquí accedemos correctamente a insertId
+                    id: (results as mysql.ResultSetHeader).insertId, // ID del nuevo enlace
                     url,
                     description,
                 });
             },
         );
     } else {
-        res.status(405).json({ error: "Method not allowed" });
+        res.status(405).json({ error: "Method not allowed" }); // Si el método no es GET ni POST
     }
 }

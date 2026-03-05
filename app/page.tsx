@@ -32,6 +32,9 @@ const Home = () => {
             },
             body: JSON.stringify({ url, description }),
         });
+        // const data = await res.json();
+        // console.log(data);
+
 
         if (res.ok) {
             loadLinks(); // Recargar los enlaces
@@ -124,8 +127,6 @@ const Home = () => {
                         >
                             Save
                         </button>
-
-                        {/* <button type="submit">Save link</button> */}
                     </form>
                 </div>
             </div>
